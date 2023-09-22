@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["esnext"],
-    "module": "esnext",
+    "lib": [
+      "ESNext"
+    ],
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -10,5 +12,8 @@
     "strictNullChecks": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
-  }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }
