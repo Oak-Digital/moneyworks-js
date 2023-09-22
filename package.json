@@ -33,7 +33,7 @@
     }
   },
   "bin": {
-    "mw": "./bin/cli/index.cjs"
+    "mw": "./dist/cli/index.cjs"
   },
   "files": [
     "bin",
@@ -42,7 +42,7 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "cli": "jiti bin/cli/index.cjs",
+    "cli": "jiti dist/cli/index.cjs",
     "lint": "eslint .",
     "prepublishOnly": "nr build",
     "release": "bumpp",
