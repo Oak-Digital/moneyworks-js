@@ -1,18 +1,16 @@
 {
-  "name": "pkg-placeholder",
+  "name": "@oak-digital/moneyworks",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@8.7.6",
-  "description": "_description_",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "description": "A javascript/typescript client to interact with the moneyworks REST API.",
+  "author": "Oak Digital",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/pkg-placeholder#readme",
+  "homepage": "https://github.com/Oak-Digital/moneyworks#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/pkg-placeholder.git"
+    "url": "git+https://github.com/Oak-Digital/moneyworks.git"
   },
-  "bugs": "https://github.com/antfu/pkg-placeholder/issues",
+  "bugs": "https://github.com/Oak-Digital/moneyworks/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
@@ -41,7 +39,7 @@
     "dev": "unbuild --stub",
     "lint": "eslint .",
     "prepublishOnly": "nr build",
-    "release": "bumpp && npm publish",
+    "release": "bumpp",
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
@@ -49,8 +47,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^1.0.0-beta.0",
-    "@antfu/ni": "^0.21.8",
-    "@antfu/utils": "^0.7.6",
     "@types/node": "^20.6.3",
     "bumpp": "^9.2.0",
     "eslint": "^8.49.0",
