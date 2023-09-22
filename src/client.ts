@@ -27,6 +27,42 @@ export const moneyWorksCommands = [
 
 export type MoneyWorksCommand = (typeof moneyWorksCommands)[number]
 
+// Available table names are: account, ledger, general, department, link, transaction, detail, log, taxrate, message, name, payments, product (items), job, build, jobsheet, bankrecs, autosplit, memo, user, user2, offledger, filter, stickies, lists, login, contacts, inventory, assetcat and asset
+export const moneyWorksTables = [
+  'account',
+  'ledger',
+  'general',
+  'department',
+  'link',
+  'transaction',
+  'detail',
+  'log',
+  'taxrate',
+  'message',
+  'name',
+  'payments',
+  'product',
+  'job',
+  'build',
+  'jobsheet',
+  'bankrecs',
+  'autosplit',
+  'memo',
+  'user',
+  'user2',
+  'offledger',
+  'filter',
+  'stickies',
+  'lists',
+  'login',
+  'contacts',
+  'inventory',
+  'assetcat',
+  'asset',
+] as const
+
+export type MoneyWorksTable = (typeof moneyWorksTables)[number]
+
 export class MoneyWorksClient {
   private host: string
   private port?: number
@@ -52,17 +88,30 @@ export class MoneyWorksClient {
     return this.secure ? 'https' : 'http'
   }
 
-  public async request(method: string, command: MoneyWorksCommand) {
+  public async request<T>(
+    method: string,
+    command: MoneyWorksCommand,
+    params: Record<string, string> = {},
+  ) {
     // https://secure.cognito.co.nz/developer/moneyworks-datacentre-rest-api/
 
     const auths: string[] = []
+    const encodedDataFile = encodeURIComponent(this.dataFile)
     if (this.username && this.password) {
       const serverAuth = base64Encode(`${this.username}:${this.password}`)
       auths.push(`Basic ${serverAuth}`)
     }
+    let dataFileAuth = ''
     if (this.dataFileUsername && this.dataFilePassword) {
-      const documentAuth = base64Encode(`${this.dataFileUsername}:${this.dataFile}:${this.dataFilePassword}`)
-      auths.push(`Basic ${documentAuth}`)
+      // TODO: make it work with auth header
+      // const splittedDataFileName = this.dataFile.split('/')
+      // const dataFileName = splittedDataFileName[splittedDataFileName.length - 1]
+      // const dataFileNameWithoutExtension = dataFileName.replace(/\.moneyworks$/, '')
+      // const documentAuth = base64Encode(
+      //   `${this.dataFileUsername}:${encodeURIComponent(dataFileName)}:${this.dataFilePassword}`,
+      // )
+      // auths.push(`Basic ${documentAuth}`)
+      dataFileAuth = `${this.dataFileUsername}:${this.dataFilePassword}@`
     }
     const headers = {
       Authorization: auths.join(', '),
@@ -70,15 +119,29 @@ export class MoneyWorksClient {
 
     const portString = this.port ? `:${this.port}` : ''
 
-    const response = await axios.request({
+    const response = await axios.request<T>({
       method,
       headers,
-      url: `${this.getScheme()}://${this.host}${portString}/REST/${encodeURIComponent(this.dataFile)}/${command}`,
+      url: `${this.getScheme()}://${this.host
+        }${portString}/REST/${dataFileAuth}${encodedDataFile}/${command}`,
       params: {
         format: 'xml',
+        ...params,
       },
     })
 
-    // console.log(response.data)
+    return response
+  }
+
+  public async version() {
+    const response = await this.request<string>('GET', 'version')
+    return response.data
+  }
+
+  public async export(tableName: MoneyWorksTable) {
+    const response = await this.request<any>('GET', 'export', {
+      table: tableName,
+    })
+    return response.data
   }
 }

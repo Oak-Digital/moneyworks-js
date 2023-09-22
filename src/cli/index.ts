@@ -3,11 +3,12 @@ import { Command, Option } from '@commander-js/extra-typings'
 // import { Command, Option } from 'commander'
 
 import packageJson from '../../package.json' assert { type: 'json' }
-import { MoneyWorksClient } from '../client'
+import { setupVersionCommand } from './commands/version'
+import { setupExportCommand } from './commands/export'
 
 // import packageJson from '../../package.json'
 
-const program = new Command()
+export const program = new Command()
   .name('mw')
   .version(packageJson.version, '-v')
   .description('A CLI for MoneyWorks Datacentre REST API')
@@ -15,13 +16,17 @@ const program = new Command()
     new Option(
       '-h, --host <host>',
       'The host of the MoneyWorks Datacentre server',
-    ).env('MW_HOST'),
+    )
+      .env('MW_HOST')
+      .makeOptionMandatory(),
   )
   .addOption(
     new Option(
       '-p, --port <port>',
       'The port of the MoneyWorks Datacentre server',
-    ).env('MW_PORT'),
+    )
+      .env('MW_PORT')
+      .argParser(value => Number.parseInt(value)),
   )
   .addOption(
     new Option(
@@ -39,7 +44,9 @@ const program = new Command()
     new Option(
       '-d, --data-file <dataFile>',
       'The data file of the MoneyWorks Datacentre server',
-    ).env('MW_DATA_FILE'),
+    )
+      .env('MW_DATA_FILE')
+      .makeOptionMandatory(),
   )
   .addOption(
     new Option(
@@ -59,41 +66,13 @@ const program = new Command()
       .env('MW_SECURE'),
   )
 
+setupVersionCommand(program)
+setupExportCommand(program)
+
 program.parse()
+//
 
-const options = program.opts()
-const {
-  host,
-  port,
-  username,
-  password,
-  dataFile,
-  dataFileUsername,
-  dataFilePassword,
-  secure,
-} = options
-
-if (!host)
-  throw new Error('Host is required')
-
-if (!dataFile)
-  throw new Error('Data file is required')
-
-const portNumber = port ? Number.parseInt(port) : undefined
-if (portNumber && Number.isNaN(portNumber))
-  throw new Error('Port must be a number')
-
-const client = new MoneyWorksClient({
-  host,
-  port: portNumber,
-  username,
-  password,
-  dataFile,
-  dataFileUsername,
-  dataFilePassword,
-  secure,
-})
-
-  ; (async () => {
-  await client.request('GET', 'version')
-})()
+// ; (async () => {
+//   const version = await client.version()
+//   console.log(version)
+// })()
