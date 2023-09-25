@@ -6,6 +6,6 @@ export function setupVersionCommand(p: typeof program) {
     const client = createClient(p)
     const version = await client.version()
     /* eslint-disable-next-line no-console */
-    console.log(version)
+    console.log(version.data)
   })
 }

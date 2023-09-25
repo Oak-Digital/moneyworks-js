@@ -5,6 +5,7 @@ import { Command, Option } from '@commander-js/extra-typings'
 import packageJson from '../../package.json' assert { type: 'json' }
 import { setupVersionCommand } from './commands/version'
 import { setupExportCommand } from './commands/export'
+import { setupImportCommand } from './commands/import'
 
 // import packageJson from '../../package.json'
 
@@ -68,6 +69,7 @@ export const program = new Command()
 
 setupVersionCommand(program)
 setupExportCommand(program)
+setupImportCommand(program)
 
 program.parse()
 //

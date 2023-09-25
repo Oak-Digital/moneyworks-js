@@ -92,6 +92,7 @@ export class MoneyWorksClient {
     method: string,
     command: MoneyWorksCommand,
     params: Record<string, string> = {},
+    axiosConfig: AxiosRequestConfig = {},
   ) {
     // https://secure.cognito.co.nz/developer/moneyworks-datacentre-rest-api/
 
@@ -128,6 +129,7 @@ export class MoneyWorksClient {
         format: 'xml',
         ...params,
       },
+      ...axiosConfig,
     })
 
     return response
@@ -135,13 +137,27 @@ export class MoneyWorksClient {
 
   public async version() {
     const response = await this.request<string>('GET', 'version')
-    return response.data
+    return response
   }
 
   public async export(tableName: MoneyWorksTable) {
-    const response = await this.request<any>('GET', 'export', {
+    const response = await this.request('GET', 'export', {
       table: tableName,
     })
-    return response.data
+    return response
+  }
+
+  public async import(tableName: MoneyWorksTable, data: string) {
+    const response = await this.request(
+      'POST',
+      'import',
+      {
+        table: tableName,
+      },
+      {
+        data,
+      },
+    )
+    return response
   }
 }

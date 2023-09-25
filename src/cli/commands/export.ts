@@ -12,6 +12,6 @@ export function setupExportCommand(p: typeof program) {
       const client = createClient(p)
       const data = await client.export(table)
       /* eslint-disable-next-line no-console */
-      console.log(data)
+      console.log(data.data)
     })
 }
