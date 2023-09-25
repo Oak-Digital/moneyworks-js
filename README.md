@@ -21,7 +21,7 @@ A javascript/typescript client to interact with the [moneyworks](https://www.cog
 [npm-downloads-href]: https://npmjs.com/package/moneyworks
 [bundle-src]: https://img.shields.io/bundlephobia/minzip/moneyworks?style=flat&colorA=080f12&colorB=1fa669&label=minzip
 [bundle-href]: https://bundlephobia.com/result?p=moneyworks
-[license-src]: https://img.shields.io/github/license/oak-digital/moneyworks.svg?style=flat&colorA=080f12&colorB=1fa669
-[license-href]: https://github.com/oak-digital/moneyworks/blob/main/LICENSE
+[license-src]: https://img.shields.io/github/license/Oak-Digital/moneyworks-js.svg?style=flat&colorA=080f12&colorB=1fa669
+[license-href]: https://github.com/Oak-Digital/moneyworks-js/blob/main/LICENSE
 [jsdocs-src]: https://img.shields.io/badge/jsdocs-reference-080f12?style=flat&colorA=080f12&colorB=1fa669
 [jsdocs-href]: https://www.jsdocs.io/package/moneyworks

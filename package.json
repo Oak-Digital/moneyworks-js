@@ -6,12 +6,12 @@
   "description": "A javascript/typescript client to interact with the moneyworks REST API.",
   "author": "Oak Digital",
   "license": "MIT",
-  "homepage": "https://github.com/Oak-Digital/moneyworks#readme",
+  "homepage": "https://github.com/Oak-Digital/moneyworks-js#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Oak-Digital/moneyworks.git"
+    "url": "git+https://github.com/Oak-Digital/moneyworks-js.git"
   },
-  "bugs": "https://github.com/Oak-Digital/moneyworks/issues",
+  "bugs": "https://github.com/Oak-Digital/moneyworks-js/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
