@@ -141,14 +141,14 @@ export class MoneyWorksClient {
   }
 
   public async export(tableName: MoneyWorksTable) {
-    const response = await this.request('GET', 'export', {
+    const response = await this.request<string>('GET', 'export', {
       table: tableName,
     })
     return response
   }
 
   public async import(tableName: MoneyWorksTable, data: string) {
-    const response = await this.request(
+    const response = await this.request<string>(
       'POST',
       'import',
       {
