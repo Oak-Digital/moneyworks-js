@@ -1,6 +1,8 @@
+import { XMLBuilder } from 'fast-xml-parser'
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { base64Encode } from './lib/base64'
+import type { CreateTransaction } from './types/transaction'
 
 export interface MoneyWorksClientOptions {
   readonly host: string
@@ -158,6 +160,66 @@ export class MoneyWorksClient {
         data,
       },
     )
+    return response
+  }
+
+  public async createTransaction(data: CreateTransaction) {
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      suppressBooleanAttributes: false,
+      format: true,
+    })
+
+    const workItOutObject = {
+      '@_work-it-out': 'true',
+    }
+
+    const {
+      ourref,
+      transdate,
+      duedate,
+      detail,
+      type,
+      flag,
+      namecode,
+      gross,
+      ...rest
+    } = data
+
+    const xml = builder.build({
+      '?xml': {
+        '@_version': '1.0',
+      },
+      'table': {
+        '@_name': 'Transaction',
+        '@_count': 1,
+        '@_start': 0,
+        '@_found': 1,
+        'transaction': {
+          ourref: ourref ?? workItOutObject,
+          transdate: transdate ?? workItOutObject,
+          duedate: duedate ?? workItOutObject,
+          type,
+          namecode,
+          flag,
+          gross: gross ?? detail.reduce((acc, { gross = 0 }) => acc + gross, 0),
+          ...rest,
+          subfile: {
+            '@_name': 'Detail',
+            'detail': detail.map((detail) => {
+              return Object.entries(detail).reduce((acc, [key, value]) => {
+                acc[`detail.${key}`] = value
+                return acc
+              }, {} as Record<string, string>)
+            }),
+          },
+        },
+      },
+    })
+
+    // console.log(xml)
+
+    const response = await this.import('transaction', xml)
     return response
   }
 }
