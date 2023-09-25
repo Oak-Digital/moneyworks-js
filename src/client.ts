@@ -232,9 +232,10 @@ export class MoneyWorksClient {
     const parser = new XMLParser({})
     const parsed = parser.parse(response.data)
 
-    if (!Array.isArray(parsed?.table?.product))
+    const products = parsed?.table?.product
+    if (!Array.isArray(products))
       throw new Error('Invalid response')
 
-    return parsed.table.product
+    return products
   }
 }
