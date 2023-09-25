@@ -1,4 +1,4 @@
-import { XMLBuilder } from 'fast-xml-parser'
+import { XMLBuilder, XMLParser } from 'fast-xml-parser'
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { base64Encode } from './lib/base64'
@@ -207,10 +207,13 @@ export class MoneyWorksClient {
           subfile: {
             '@_name': 'Detail',
             'detail': detail.map((detail) => {
-              return Object.entries(detail).reduce((acc, [key, value]) => {
-                acc[`detail.${key}`] = value
-                return acc
-              }, {} as Record<string, string>)
+              return Object.entries(detail).reduce(
+                (acc, [key, value]) => {
+                  acc[`detail.${key}`] = value
+                  return acc
+                },
+                {} as Record<string, string>,
+              )
             }),
           },
         },
@@ -221,5 +224,17 @@ export class MoneyWorksClient {
 
     const response = await this.import('transaction', xml)
     return response
+  }
+
+  public async getProducts() {
+    const response = await this.export('product')
+
+    const parser = new XMLParser({})
+    const parsed = parser.parse(response.data)
+
+    if (!Array.isArray(parsed?.table?.product))
+      throw new Error('Invalid response')
+
+    return parsed.table.product
   }
 }
