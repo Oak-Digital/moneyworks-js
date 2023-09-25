@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { one } from '../src'
+import { MoneyWorksClient } from '../src'
 
 describe('should', () => {
   it('exported', () => {
-    expect(one).toEqual(1)
+    const client = new MoneyWorksClient({
+      host: 'localhost',
+      dataFile: 'test.moneyworks',
+    })
+    expect(client).not.toBeUndefined()
   })
 })
