@@ -163,6 +163,10 @@ export class MoneyWorksClient {
     return response
   }
 
+  private formatDate(date: Date) {
+    return `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}`
+  }
+
   public async createTransaction(data: CreateTransaction) {
     const builder = new XMLBuilder({
       ignoreAttributes: false,
@@ -197,8 +201,8 @@ export class MoneyWorksClient {
         '@_found': 1,
         'transaction': {
           ourref: ourref ?? workItOutObject,
-          transdate: transdate ?? workItOutObject,
-          duedate: duedate ?? workItOutObject,
+          transdate: transdate ? this.formatDate(transdate) : workItOutObject,
+          duedate: duedate ? this.formatDate(duedate) : workItOutObject,
           type,
           namecode,
           flag,
