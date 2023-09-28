@@ -1,7 +1,7 @@
 {
   "name": "@oak-digital/moneyworks",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "packageManager": "pnpm@8.7.5",
   "description": "A javascript/typescript client to interact with the moneyworks REST API.",
   "author": "Oak Digital",
