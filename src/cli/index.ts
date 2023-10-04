@@ -6,6 +6,7 @@ import packageJson from '../../package.json' assert { type: 'json' }
 import { setupVersionCommand } from './commands/version'
 import { setupExportCommand } from './commands/export'
 import { setupImportCommand } from './commands/import'
+import { setupGetInvoiceCommand } from './commands/get-invoice'
 
 // import packageJson from '../../package.json'
 
@@ -70,6 +71,7 @@ export const program = new Command()
 setupVersionCommand(program)
 setupExportCommand(program)
 setupImportCommand(program)
+setupGetInvoiceCommand(program)
 
 program.parse()
 //

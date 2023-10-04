@@ -4,6 +4,8 @@ import axios from 'axios'
 import { base64Encode } from './lib/base64'
 import type { CreateTransaction } from './types/transaction'
 import { buildTransactionXml } from './formatting/xml-builder'
+import type { OrStringLiteral } from './types/strings'
+import { formatDate } from './formatting/date'
 
 export interface MoneyWorksClientOptions {
   readonly host: string
@@ -94,7 +96,7 @@ export class MoneyWorksClient {
   public async request<T>(
     method: string,
     command: MoneyWorksCommand,
-    params: Record<string, string> = {},
+    params: AxiosRequestConfig['params'] = {},
     axiosConfig: AxiosRequestConfig = {},
   ) {
     // https://secure.cognito.co.nz/developer/moneyworks-datacentre-rest-api/
@@ -125,7 +127,6 @@ export class MoneyWorksClient {
 
     const response = await axios.request<T>({
       method,
-      headers,
       url: `${this.getScheme()}://${this.host
         }${portString}/REST/${dataFileAuth}${encodedDataFile}/${command}`,
       params: {
@@ -133,6 +134,10 @@ export class MoneyWorksClient {
         ...params,
       },
       ...axiosConfig,
+      headers: {
+        ...headers,
+        ...axiosConfig.headers,
+      },
     })
 
     return response
@@ -183,5 +188,46 @@ export class MoneyWorksClient {
       throw new Error('Invalid response')
 
     return products
+  }
+
+  public async doform(
+    params: {
+      form?: string
+      search?: string
+      Message?: string
+      Print_Copy?: OrStringLiteral<0 | 1>
+      Include_Remit?: OrStringLiteral<0 | 1>
+      Stmt_Date?: string | Date
+      Omit_Zero?: OrStringLiteral<0 | 1>
+      Omit_Credit?: OrStringLiteral<0 | 1>
+    } = {},
+  ) {
+    const { Stmt_Date, form = 'Plain Ruled Invoice', ...rest } = params
+    return this.request<string>(
+      'GET',
+      'doform',
+      {
+        format: 'pdf',
+        ...rest,
+        Stmt_Date:
+          Stmt_Date instanceof Date ? formatDate(Stmt_Date) : Stmt_Date,
+        form,
+      },
+      {
+        responseType: 'arraybuffer',
+      },
+    )
+  }
+
+  /**
+   * @beta This might change in the future
+   */
+  public async getInvoice(sequenceNumber: string | number, form?: string) {
+    return this.doform({
+      form,
+      search: `sequencenumber=${sequenceNumber}`,
+      // Message: 'Thanks',
+      // Print_Copy: 1,
+    })
   }
 }
