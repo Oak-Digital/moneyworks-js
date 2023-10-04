@@ -27,8 +27,8 @@ describe('xml-builder', () => {
 <table name="Transaction" count="1" start="0" found="1">
   <transaction>
     <ourref work-it-out="true"></ourref>
-    <transdate>2023928</transdate>
-    <duedate>2023928</duedate>
+    <transdate>20230928</transdate>
+    <duedate>20230928</duedate>
     <type>SOI</type>
     <namecode>WEB_ORDER</namecode>
     <flag>EDI</flag>
