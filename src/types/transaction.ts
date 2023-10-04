@@ -2,7 +2,10 @@ export interface Transaction {
   ourref: string | number
   transdate: Date
   duedate: Date
-  theirref?: string
+  /**
+   * The order id that should be displayed to the customer
+   */
+  theirref?: string | number
   type: string
   namecode?: string
   flag?: string
