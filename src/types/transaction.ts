@@ -14,7 +14,18 @@ export interface Transaction {
   mailingaddress?: string
   deliveryaddress?: string
   detail: TransactionDetail[]
-  [key: `user${number}`]: string
+  user1?: string
+  /**
+   * User phone number
+   */
+  user2?: string
+  /**
+   * User email address
+   * @example test@example.com
+   */
+  user3?: string
+  // TODO: Make thid work with Date
+  user4?: string
   // TODO: Allow passthrough
   // [key: string]: any
 }
@@ -39,4 +50,5 @@ export interface TransactionDetail {
 
 type CreateOptionalKeys = 'ourref' | 'transdate' | 'duedate' | 'gross'
 
-export type CreateTransaction = Omit<Transaction, CreateOptionalKeys> & Partial<Pick<Transaction, CreateOptionalKeys>>
+export type CreateTransaction = Omit<Transaction, CreateOptionalKeys> &
+  Partial<Pick<Transaction, CreateOptionalKeys>>
