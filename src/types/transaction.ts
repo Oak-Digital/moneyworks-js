@@ -11,7 +11,7 @@ export interface Transaction {
   flag?: string
   gross: number
   description?: string
-  contra?: number
+  contra?: number | string
   tofrom: string
   prodpricecode: string
   mailingaddress?: string
