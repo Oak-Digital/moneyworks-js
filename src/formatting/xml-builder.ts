@@ -15,6 +15,7 @@ export function buildTransactionXml(transaction: CreateTransaction) {
   }
 
   const {
+    return_seq,
     ourref,
     transdate,
     duedate,
@@ -36,6 +37,7 @@ export function buildTransactionXml(transaction: CreateTransaction) {
       '@_count': 1,
       '@_start': 0,
       '@_found': 1,
+      '@_return_seq': return_seq,
       'transaction': {
         ourref: ourref ?? workItOutObject,
         transdate: transdate ? formatDate(transdate) : workItOutObject,

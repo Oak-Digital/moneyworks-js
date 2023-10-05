@@ -54,4 +54,9 @@ export interface TransactionDetail {
 type CreateOptionalKeys = 'ourref' | 'transdate' | 'duedate' | 'gross'
 
 export type CreateTransaction = Omit<Transaction, CreateOptionalKeys> &
-  Partial<Pick<Transaction, CreateOptionalKeys>>
+  Partial<Pick<Transaction, CreateOptionalKeys>> & {
+    /**
+     * Whether or not the invoice sequence number should be returned
+     */
+    return_seq?: boolean
+  }
